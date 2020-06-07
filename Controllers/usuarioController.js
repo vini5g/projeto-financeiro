@@ -1,17 +1,16 @@
-function cadastrar(dados){
-    const { Nome, Email, Senha, Endereco, Telefone } = dados;
-
+function cadastrar(Nome, Email, Senha, Endereco, Telefone){
+    
     try {
-        if (buscarUsuarioPeloEmail(Email.value) == 0 ){
+        if (buscarUsuarioPeloEmail(Email) == 0){
             return 1;
         }
 
         const usuario = Usuario(
-            Nome.value, 
-            Email.value, 
-            Senha.value, 
-            Endereco.value, 
-            Telefone.value
+            Nome, 
+            Email, 
+            Senha, 
+            Endereco, 
+            Telefone
         );
 
         usuario.status = 'ATIVO';
