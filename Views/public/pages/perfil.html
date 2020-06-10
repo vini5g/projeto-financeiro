@@ -69,7 +69,7 @@
                             <button type="button" id="deletar">deletar usuário</button>
                         </div>
                         <div class="col-md-4">
-                            <button type="button" id="alterarSenha">alterar senha</button>
+                            <a href="alterarSenha.html">alterar senha</a>
                         </div>
                     </div>
                 </div>
@@ -84,12 +84,11 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
     <!--Scripts de links externos-->
-    <script src="../../../api/utils/dadosLocalStorage.js"></script>
-    <script src="../../js/utils/renderizar.js"></script>
-    <script src="../../js/utils/deslogar.js"></script>
+    <script src="../../js/pages/utils/deslogar.js"></script>
+    <script src="../../../Controllers/utils/verificacoes.js"></script>
     <script src="../../js/pages/perfil.js"></script>
-    <script src="../../../api/utils/verificaUsuario.js"></script>
-    <script src="../../../api/Usuario.js"></script>
+    <script src="../../../Controllers/usuarioController.js"></script>
+    <script src="../../../Models/Usuario.js"></script>
 
 </body>
 </html>

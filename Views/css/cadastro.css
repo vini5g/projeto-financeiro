@@ -24,6 +24,7 @@ body{
 
 .img img{
     width: 100%;
+    animation: move 500ms;
 }
 
 .login-container{
@@ -221,6 +222,18 @@ a#cadastrar:hover{
         transform: scale(1);
     }
 }
+
+@keyframes move{
+    from{
+        opacity: 1;
+        transform: translate(35%);
+    }
+    to{
+        opacity: 1;
+        transform: translateX(0%);
+    }
+}
+
 
 @media screen and (max-width: 1050px){
     .container{

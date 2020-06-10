@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>Projeto Financeiro</title>
-    <link rel="stylesheet" href="../../css/home.css">
+    <link rel="stylesheet" href="../../css/categoria.css">
     <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -47,7 +47,7 @@
                 <div class="collapse navbar-collapse" id="conteudoNavbarSuportado">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">HOME</a>
+                            <a class="nav-link" href="#">CADASTRO DE CONTAS</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav ml-auto">
@@ -61,32 +61,58 @@
         </nav>
     
         <div class="container mt-4">
-            <div class="row mt-3">
-                <div class="col-4">
-                    <div class="card text-white bg-primary mb-3 text-center">
-                        <div class="card-header">RECEITAS</div>
-                        <div class="card-body">
-                          <p class="card-text">0</p>
-                        </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="login-container">
+                        <form id="perfil">
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                                <div>
+                                    <h5>Nome da categoria</h5>
+                                    <input type="text" id="input" class="input" required>
+                                </div>
+                            </div>
+                            <div class="form-class">
+                                <h5>Tipo</h5>
+                                <select id="tipo" class="form-control">
+                                    <option id="tipo" value="receita">Receitas</option>
+                                    <option id="tipo" value="despezas">Despezas</option>
+                                </select>
+                            </div>
+                            <div class="form-class">
+                                <h5>Categoria</h5>
+                                <select id="categoria" class="form-control">
+                                </select>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <button type="submit" class="btn" id="cadastrar">Cadastrar</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="submit" class="btn" id="alterar">Alterar</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div class="col-4">
-                    <div class="card text-white bg-warning mb-3 text-center">
-                        <div class="card-header">DESPEZAS</div>
-                        <div class="card-body">
-                          <p class="card-text">0</p>
-                        </div>
-                    </div>
+                <div class="col-md-6">
+                    <table class="table">
+                        <thead class="table-personalizada">
+                          <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">NOME</th>
+                            <th scope="col">TIPO</th>
+                            <th scope="col">CATEGORIA</th>
+                            <th scope="col"></th>
+                          </tr>
+                        </thead>
+                        <tbody id="conteudo-table">
+                        </tbody>
+                    </table>
                 </div>
-                <div class="col-4">
-                    <div class="card text-white bg-success mb-3 text-center">
-                        <div class="card-header">SALDO</div>
-                        <div class="card-body">
-                          <p class="card-text">0</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </div>  
         </div>
     </div>
 
@@ -97,9 +123,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
     <!--Scripts de links externos-->
+    <script src="../../js/pages/conta.js"></script>
+    <script src="../../../Models/Contas.js"></script>
+    <script src="../../../Controllers/contaController.js"></script>
     <script src="../../js/pages/utils/deslogar.js"></script>
-    <script src="../../js/pages/index.js"></script>
-    <script src="../../../Models/Usuario.js"></script>
-    <script src="../../../Controllers/usuarioController.js"></script>
 </body>
 </html>

@@ -13,13 +13,18 @@ function Usuario(nome, email, senha, endereco, telefone){
         return JSON.parse(localStorage.getItem("Usuarios"));
     }
 
-    function insertUsuario(user) {
+    function insertUsuarios(user) {
         const Usuarios = JSON.parse(localStorage.getItem("Usuarios")) || [];
         Usuarios.push(user);
         localStorage.setItem("Usuarios", JSON.stringify(Usuarios));
     }
 
-    usuario.insertUsuario = insertUsuario;
+    function updateUsuarios(users) {
+        localStorage.setItem("Usuarios", JSON.stringify(users));
+    }
+
+    usuario.insertUsuarios = insertUsuarios;
     usuario.selectUsuarios = selectUsuarios;
+    usuario.updateUsuarios = updateUsuarios;
     return usuario;
 }

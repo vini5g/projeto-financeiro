@@ -2,15 +2,12 @@ function buscarUsuarioPeloEmail(email) {
     const usuarios = Usuario();
     const lista = usuarios.selectUsuarios();
 
-    if (lista == null){
-        return 1;
-    }
+    if (lista !== null) return lista.find((item)=> item.email == email);
+}
 
-    const usuario = lista.find((item)=> item.email == email);
+function buscarUsuarioPelaSenha(senha) {
+    const usuarios = Usuario();
+    const lista = usuarios.selectUsuarios();
 
-    if (usuario != undefined){
-        return 0;
-    } else {
-        return 2;
-    }
+    if (lista !== null) return lista.find((item)=> item.senha == senha);
 }

@@ -44,13 +44,6 @@ btnLogin.addEventListener("click", event => {
     });
 
     const formError = document.querySelector("form.validate-error");
-    if (formError) {
-        formError.addEventListener("animationend", (event) => {
-            if (event.animationName === "nono") {
-                formError.classList.remove("validate-error");
-            }
-        });
-    }
 
     let email = inputs[1].value.toString();
 
@@ -62,6 +55,16 @@ btnLogin.addEventListener("click", event => {
     }
 
     if (inputsEmpty == true){
+        form.classList.add("validate-error");
+
+        if (formError) {
+            formError.addEventListener("animationend", (event) => {
+                if (event.animationName === "nono") {
+                    formError.classList.remove("validate-error");
+                }
+            });
+        }
+
         return Toast.fire({
             icon: 'error',
             title: 'Preencha todos os campos'
@@ -69,18 +72,23 @@ btnLogin.addEventListener("click", event => {
     }
 
     if (emailValido == false){
+        form.classList.add("validate-error");
+
+        if (formError) {
+            formError.addEventListener("animationend", (event) => {
+                if (event.animationName === "nono") {
+                    formError.classList.remove("validate-error");
+                }
+            });
+        }
+        
         return Toast.fire({
             icon: 'error',
             title: 'Email Inválido'
         });
     }
         
-    switch (cadastrar(
-        inputs[0].value, 
-        inputs[1].value, 
-        inputs[2].value, 
-        inputs[3].value, 
-        inputs[4].value)) {
+    switch (cadastrar(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value, inputs[4].value)) {
         case 0:
             Swal.fire({
                 icon: 'success',
@@ -91,18 +99,29 @@ btnLogin.addEventListener("click", event => {
             });
             break;
 
-        case 1:          
+        case 1:     
+                form.classList.add("validate-error");
+    
                 Toast.fire({
                 icon: 'error',
-                title: 'Este email pertence a outro usuário'
+                title: 'Não foi possível cadastrar o usuário'
                 })
             break;
 
         case 2:
+                form.classList.add("validate-error");
+
                 Toast.fire({
                 icon: 'error',
-                title: 'Não foi possível cadastrar o usuário!'
+                title: 'Este email pertence a outro usuário'
                 })
             break;  
+    }
+    if (formError) {
+        formError.addEventListener("animationend", (event) => {
+            if (event.animationName === "nono") {
+                formError.classList.remove("validate-error");
+            }
+        });
     }
 });
