@@ -1,41 +1,46 @@
-const inputs = [...document.querySelectorAll("input")];
+const [nome, email, telefone, endereco] = document.getElementsByTagName('input');
+
+(function() {
+    window.addEventListener('load', function() {
+
+      let forms = document.getElementsByClassName('form-container');
+    
+      Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                event.preventDefault();
+                efetuarAcoes(event);
+            }
+            form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+})();
 
 function Main() {
+    const usuario = listar();
+    if (usuario == null) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro ao listar o usuário',
+            showConfirmButton: true,
+        }).then(() => {
+            window.location = './index.html';
+        });
+    }
 
-    inputs.forEach(input => {
-        input.parentNode.parentNode.classList.add('focus');
-    })
+    document.querySelector("#usuario").innerHTML = usuarioLogado().nome;  
 
-    const usuario = usuarioLogado();
-    inputs[0].value = usuario.nome;
-    inputs[1].value = usuario.email;
-    inputs[2].value = usuario.endereco;
-    inputs[3].value = usuario.telefone;
+    nome.value = usuario.nome;
+    email.value = usuario.email;
+    endereco.value = usuario.endereco;
+    telefone.value = usuario.telefone;
 }
 
-inputs.forEach(input => {
-    input.addEventListener('focus', focusFunc);
-    input.addEventListener('blur', blurFocus);
-});
-
-function focusFunc(){
-    let parent = this.parentNode.parentNode;
-    parent.classList.add('focus');
-}
-
-function blurFocus(){
-    let parent = this.parentNode.parentNode;
-    if(this.value == "") parent.classList.remove('focus');
-}
-
-const btnAlterar = document.querySelector('button#alterar');
-const btnDeletar = document.querySelector('button#deletar');
-
-const form = document.querySelector('form#perfil');
-
-btnAlterar.addEventListener('click', event => {
-    event.preventDefault();
-
+function efetuarAcoes() {
     const Toast = Swal.mixin({
         toast: true,
         position: 'top',
@@ -47,67 +52,20 @@ btnAlterar.addEventListener('click', event => {
           toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
     })
-
-    let inputsEmpty = false;
-    inputs.forEach(input => {
-        if (input.value === "") {
-            form.classList.add("validate-error");
-            inputsEmpty = true;
-        } 
-    });
-
-    const formError = document.querySelector("form#perfil");
-
-    let email = inputs[1].value.toString();
-
-    let emailValido = false;
-    for (let i = 0; i < email.length; i++) if (email[i] == "@") emailValido = true;
-
-    if (inputsEmpty == true){
-        form.classList.add("validate-error");
-
-        if (formError) 
-            formError.addEventListener("animationend", event => {
-                if (event.animationName === "nono") formError.classList.remove("validate-error");
-            });
-        Main();
-    
-        return Toast.fire({
-            icon: 'error',
-            title: 'Preencha todos os campos'
-        });
-    }
-
-    if (emailValido == false){
-        form.classList.add("validate-error");
-
-        if (formError) 
-            formError.addEventListener("animationend", event => {
-                if (event.animationName === "nono") formError.classList.remove("validate-error");
-            });
-        Main();
-        
-        return Toast.fire({
-            icon: 'error',
-            title: 'Email Inválido'
-        });
-    }
-
-    switch (alterar(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value)) {
+   
+    switch (alterar(nome.value, email.value, endereco.value, telefone.value)) {
         case 0:
             Toast.fire({
                 icon: 'success',
                 title: 'Usuário alterado com sucesso'
                 })
             break;
-
         case 1:
             Toast.fire({
                 icon: 'error',
                 title: 'Não foi possível alterar o usuário'
             })
             break;
-        
         case 2:
             Toast.fire({
                 icon: 'error',
@@ -115,56 +73,21 @@ btnAlterar.addEventListener('click', event => {
             })
             break;
     }
-    if (formError) {
-        formError.addEventListener("animationend", (event) => {
-            if (event.animationName === "nono") {
-                formError.classList.remove("validate-error");
-            }
-        });
-    }
-
     Main();
-});
+}
 
-btnDeletar.addEventListener('click', event => {
-    event.preventDefault();
-
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        onOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    })
-
-    const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-            confirmButton: 'btn-confirmar',
-            cancelButton: 'btn-cancelar'
-        },
-        buttonsStyling: false
-        })
-        
-        swalWithBootstrapButtons.fire({
-        title: 'Deseja deletar esta conta?',
-        text: "Você pode recuperá-la depois!",
+document.getElementById('deletar').addEventListener('click', () => {
+    Swal.fire({
+        title: 'Deletar esta conta?',
+        text: "Ela pode ser recuperada depois!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Sim, deletar!',
-        cancelButtonText: 'Não, cancelar!',
-        reverseButtons: true
-        }).then((result) => {
-        if (result.dismiss !== Swal.DismissReason.cancel) {
+        confirmButtonText: 'Sim, deletar!'
+    }).then((result) => {
+        if (result.value) {
             switch (deletar()) {
                 case 0:
                     Swal.fire({
-                        customClass: {
-                            confirmButton: 'btn-confirmar',
-                        },
                         icon: 'success',
                         title: 'Conta deletada',
                         showConfirmButton: true,
@@ -172,13 +95,22 @@ btnDeletar.addEventListener('click', event => {
                         window.location = '../index.html';
                     });
                     break;
+            
                 case 1:
-                    Toast.fire({
+                    Swal.fire({
                         icon: 'error',
-                        title: 'Não foi possível deletar'
-                    })
+                        title: 'Não foi possível deletar esta conta',
+                        })
+                        
                     break;
             }
-        } 
+            
+        }
+    })
+})
+
+$(document).ready(function(){
+    $('#sidebarCollapse').on('click',function(){
+        $('#sidebar').toggleClass('active');
     });
 });

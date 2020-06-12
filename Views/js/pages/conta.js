@@ -75,11 +75,8 @@ btnCadastrar.addEventListener('click', event => {
         }
     })
     
-    const selectTipo = document.querySelector("select#tipo");
-    const selectCategoria = document.querySelector("select#categoria");
-
-    const optionTipo = selectTipo.options[selectTipo.selectedIndex].text;
-    const optionCategoria = selectCategoria.options[selectCategoria.selectedIndex].value;
+    const optionTipo = document.querySelector("select#tipo").value;
+    const optionCategoria = document.querySelector("select#categoria").value;
 
     console.log(optionTipo, optionCategoria);
 
@@ -169,13 +166,10 @@ function alterarConta(id) {
         input.parentNode.parentNode.classList.add('focus');
     })
 
-    inputs[0].value = conta.nome;
-
     const selectTipo = document.querySelector("select#tipo");
-    const selectCategoria = document.querySelector("select#categoria");
-
-    const optionTipo = selectTipo.options[selectTipo.selectedIndex].text;
-    const optionCategoria = selectCategoria.options[selectCategoria.selectedIndex].value;
+    
+    inputs[0].value = conta.nome;
+    selectTipo.value = conta.tipo;
 
     btnAlterar.addEventListener('click', event => {
         event.preventDefault();
@@ -192,6 +186,10 @@ function alterarConta(id) {
             }
         })
     
+        const optionTipo = document.querySelector("select#tipo").value;
+        const optionCategoria = document.querySelector("select#categoria").value;
+
+
         let inputsEmpty = false;
         inputs.forEach(input => {
             if (input.value === "") {

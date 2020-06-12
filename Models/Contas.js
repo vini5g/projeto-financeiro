@@ -1,11 +1,11 @@
-function Conta(nome, tipo, idCategoria, idUsuario){
+function Conta(nome, tipo, categoria, usuario){
     const conta = {};
 
     conta.id = Date.now();
     conta.nome = nome;
     conta.tipo = tipo;
-    conta.idCategoria = idCategoria;
-    conta.idUsuario = idUsuario;
+    conta.categoria = categoria;
+    conta.usuario = usuario;
 
     function selectConta() {
         return JSON.parse(localStorage.getItem("Contas"));

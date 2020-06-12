@@ -1,28 +1,24 @@
-const inputs = document.querySelectorAll('.input');
+(function() {
+    window.addEventListener('load', function() {
+      
+      let forms = document.getElementsByClassName('form-container');
+    
+      Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                event.preventDefault();
+                efetuarLogin();
+            }
+            form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+})();
 
-function focusFunc(){
-    let parent = this.parentNode.parentNode;
-    parent.classList.add('focus');
-}
-
-function blurFocus(){
-    let parent = this.parentNode.parentNode;
-    if(this.value == ""){
-        parent.classList.remove('focus');
-    }
-}
-
-inputs.forEach(input => {
-    input.addEventListener('focus', focusFunc);
-    input.addEventListener('blur', blurFocus);
-});
-
-const btnLogin = document.querySelector('input#login');
-const form = document.querySelector('form#login');
-
-btnLogin.addEventListener("click", event => {
-    event.preventDefault();
-
+function efetuarLogin() {
     const Toast = Swal.mixin({
         toast: true,
         position: 'top',
@@ -33,112 +29,43 @@ btnLogin.addEventListener("click", event => {
           toast.addEventListener('mouseenter', Swal.stopTimer)
           toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
-      })
-
-    let inputsEmpty = false;
-    inputs.forEach(input => {
-        if (input.value === ""){
-            form.classList.add("validate-error");
-            inputsEmpty = true;
-        } 
-    });
-
-    const formError = document.querySelector("form.validate-error");
-
-    let email = inputs[0].value.toString();
-
-    let emailValido = false;
-    for (let i = 0; i < email.length; i++){
-        if (email[i] == "@") {
-            emailValido = true;
-        }
-    }
-
-    if (inputsEmpty == true){
-        form.classList.add("validate-error");
-
-        if (formError) {
-            formError.addEventListener("animationend", (event) => {
-                if (event.animationName === "nono") {
-                    formError.classList.remove("validate-error");
-                }
-            });
-        }
-
-        return Toast.fire({
-            icon: 'error',
-            title: 'Preencha todos os campos'
-        });
-    }
-
-    if (emailValido == false){
-        form.classList.add("validate-error");
-
-        if (formError) {
-            formError.addEventListener("animationend", (event) => {
-                if (event.animationName === "nono") {
-                    formError.classList.remove("validate-error");
-                }
-            });
-        }
-        
-        return Toast.fire({
-            icon: 'error',
-            title: 'Email Inválido'
-        });
-    }
-        
-    switch (logar(inputs[0].value, inputs[1].value)) {
+    })
+    const [email, senha] = document.getElementsByTagName('input');
+    switch (logar(email.value, senha.value)) {
         case 0:
-            window.location = './pages/index.html';
+            window.location = './pages/index.html'
             break;
-
-        case 1:     
-                form.classList.add("validate-error");
-    
-                Toast.fire({
+        case 1:
+            Toast.fire({
                 icon: 'error',
-                title: 'Não foi possível logar'
-                })
+                title: 'Não foi possível efetuar o login'
+            });
             break;
-
         case 2:
-                form.classList.add("validate-error");
-
-                Toast.fire({
+            Toast.fire({
                 icon: 'error',
-                title: 'Email não cadastrado'
-                })
-            break;  
+                title: 'Email incorreto ou não cadastrado'
+            });
+            email.value = '';
+            break;
         case 3:
-                form.classList.add("validate-error");
-
-                Toast.fire({
+            Toast.fire({
                 icon: 'error',
                 title: 'Senha incorreta'
-                })
-            break;  
+            });
+            senha.value = '';
+            break;
         case 4:
-            const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                  confirmButton: 'btn',
-                  cancelButton: 'btn'
-                },
-                buttonsStyling: false
-              })
-              
-              swalWithBootstrapButtons.fire({
-                title: 'Conta inativa',
-                text: "Desseja reativar essa conta?",
+              Swal.fire({
+                title: 'Recuperar esta conta?',
+                text: "Todos os seus dados serão recuperados!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Sim, reativar!',
-                cancelButtonText: 'Não, cancelar!',
-                reverseButtons: true
-              }).then((result) => {
-                if (result.dismiss !== Swal.DismissReason.cancel) {
-                    if (reativarConta(inputs[0].value, inputs[1].value) == 0) {
-                        swalWithBootstrapButtons.fire({
+                confirmButtonText: 'Sim, reativar!'
+            }).then((result) => {
+                if (result.value) {
+                    if (reativarConta(email.value, senha.value) == 0) {
+                        Swal.fire({
                             icon: 'success',
                             title: 'Conta reativada',
                             showConfirmButton: true,
@@ -146,22 +73,13 @@ btnLogin.addEventListener("click", event => {
                             window.location = './pages/index.html';
                         })
                     } else {
-                        swalWithBootstrapButtons.fire(
-                            'ERRO!',
-                            'Não foi possível reativar sua conta',
-                            'error'
-                        )
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Erro ao reativar conta',
+                        })
                     }
-                  }
-              })
-            break;  
+                }
+            })
+            break;
     }
-    if (formError) {
-        formError.addEventListener("animationend", (event) => {
-            if (event.animationName === "nono") {
-                formError.classList.remove("validate-error");
-            }
-        });
-    }
-});
-
+}

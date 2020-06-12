@@ -1,7 +1,9 @@
-function cadastrar(nome, tipo, categoria) {
+function cadastrar(nome, tipo, idCategoria) {
     try {
-        const idUsuario = JSON.parse(localStorage.getItem("UsuarioLogado"));
-        const conta = Conta(nome, tipo, categoria, idUsuario.id);
+        const listaCategoria = categorias();
+        if (listaCategoria === null || listaCategoria === undefined || listaCategoria.length === 0) return 2;
+        const categoria = listaCategoria.find(item => item.id == idCategoria);
+        const conta = Conta(nome, tipo, categoria, usuarioLogado());
         conta.insertConta(conta);
         return 0;
     } catch (error) {
@@ -12,12 +14,9 @@ function cadastrar(nome, tipo, categoria) {
 
 function listar() {
     const conta = Conta();
-    const idUsuario = JSON.parse(localStorage.getItem("UsuarioLogado"));
     const listar = conta.selectConta();
-    if(listar === null || listar === undefined){
-        return null;
-    } 
-    return listar.filter(item => item.idUsuario == idUsuario.id);
+    if(listar === null || listar === undefined || listar.length === 0) return null;
+    return listar.filter(item => item.idUsuario == usuarioLogado().id);
 }
 
 function deletar(id) {
@@ -34,15 +33,20 @@ function deletar(id) {
     }
 }
 
-function alterar(id, nome, tipo, categoria) {
+function alterar(id, nome, tipo, idCategoria) {
     try {
         const conta = Conta();
         const lista = conta.selectConta();
+
+        const listaCategoria = categorias();
+        if(listaCategoria === null || listaCategoria === undefined || listaCategoria.length === 0) return 2;
+        const categoria = listaCategoria.find(item => item.id == idCategoria);
+
         lista.map(item => {
             if (item.id == id) {
                 item.nome = nome;
                 item.tipo = tipo;
-                item.idCategoria = categoria;
+                item.categoria = categoria;
             } 
         })
         conta.updateConta(lista);
@@ -58,4 +62,13 @@ function deslogar(){
     const usuario = localStorage.getItem("UsuarioLogado");
     if (usuario == undefined || usuario == null) return 0;
     else return 1;
+}
+
+function usuarioLogado() {
+    return JSON.parse(localStorage.getItem("UsuarioLogado"));
+
+}
+
+function categorias() {
+    return JSON.parse(localStorage.getItem("Categorias"));
 }

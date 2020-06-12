@@ -1,9 +1,9 @@
-function Categoria(nome, idUsuario){
+function Categoria(nome, usuario){
     const categoria = {};
 
     categoria.id = Date.now();
     categoria.nome = nome;
-    categoria.idUsuario = idUsuario;
+    categoria.usuario = usuario;
 
     function selectCategoria() {
         return JSON.parse(localStorage.getItem("Categorias"));
