@@ -1,255 +1,156 @@
-const inputs = document.querySelectorAll('.input');
+const [nome] = document.getElementsByTagName('input');
 
-function Main(){
-    const usuarioLogado = JSON.parse(localStorage.getItem("UsuarioLogado"));
-    document.querySelector("#usuario").innerHTML = usuarioLogado.nome;
+(function() {
+    window.addEventListener('load', function() {
+
+      document.querySelector("#usuario").innerHTML = usuarioLogado().nome;  
+
+      let forms = document.getElementsByClassName('form-container');
+    
+      Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                event.preventDefault();
+                efetuarAcoes(event);
+            }
+            form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+})();
+
+function Main() {
     const thread = document.querySelector("tbody#conteudo-table");
     thread.innerHTML = '';
-    const categorias = listar();
-    if (categorias === undefined || categorias === null || categorias.length == 0) {
+    const renderizarCategorias = listar();
+    if (renderizarCategorias === null) {
         thread.innerHTML += '<tr>'
-                         +      '<th>Não há categorias cadastradas</th>'
-                         +      '<th>#</th>'
-                         +      '<th>#</th>'
-                         +      '<th>#</th>'
+                         +      '<th scope="row">Não há categorias cadastradas</th>'
+                         +      '<td>#</th>'
+                         +      '<td>#</th>'
                          +  '</tr>'
     } else {
-        for (const categoria of categorias) {
-            thread.innerHTML += `<tr>`
-                            +       `<th scope="row">${categoria.id}</th>`
-                            +       `<td>${categoria.nome}</td>`
-                            +       `<td>${categoria.idUsuario}</td>`
-                            +       `<td>
-                                        <button class = "btn btn-outline-warning" onclick = "alterarCategoria(${categoria.id})"><i class = "fa fa-edit"></i></button>
-                                        <button class = "btn btn-outline-danger" onclick = "deletarCategoria(${categoria.id})"><i class = "fa fa-trash-o"></i></button>
+        for (const categoria of renderizarCategorias) {
+            thread.innerHTML += '<tr>'
+                             +      `<th scope="row">${categoria.id}</th>`
+                             +      `<td>${categoria.nome}</th>`
+                             +      `<td>
+                                        <button class="btn btn-outline-warning" onclick="loadCategoria(${categoria.id})"><i class = "fa fa-edit"></i></button>
+                                        <button class="btn btn-outline-danger" onclick="deletarCategoria(${categoria.id})"><i class = "fa fa-trash-o"></i></button>
                                     </td>`
-                            +   `</tr>`
+                             +  '</tr>'
         }
     }
 }
 
-function focusFunc(){
-    let parent = this.parentNode.parentNode;
-    parent.classList.add('focus');
-}
-
-function blurFocus(){
-    let parent = this.parentNode.parentNode;
-    if(this.value == "") parent.classList.remove('focus');
-}
-
-inputs.forEach(input => {
-    input.addEventListener('focus', focusFunc);
-    input.addEventListener('blur', blurFocus);
-});
-
-const btnCadastrar = document.querySelector('button#cadastrar');
-const btnAlterar = document.querySelector('button#alterar');
-const form = document.querySelector('form#perfil');
-
-btnAlterar.addEventListener('click', event => {
-    event.preventDefault();
-
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        onOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    })
-
-    return Toast.fire({
-        icon: 'error',
-        title: 'Selecione a categoria que deseja alterar'
-    });
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+    onOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
 })
 
-btnCadastrar.addEventListener('click', event => {
-    event.preventDefault();
 
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        onOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    })
-
-    let inputsEmpty = false;
-    inputs.forEach(input => {
-        if (input.value === "") {
-            form.classList.add("validate-error");
-            inputsEmpty = true;
-        } 
-    });
-
-    const formError = document.querySelector("form#perfil");
-
-    if (inputsEmpty == true){
-        form.classList.add("validate-error");
-
-        if (formError) 
-            formError.addEventListener("animationend", event => {
-                if (event.animationName === "nono") formError.classList.remove("validate-error");
-            });
-    
-        return Toast.fire({
-            icon: 'error',
-            title: 'Preencha todos os campos'
-        });
-    }
-
-    switch(cadastrar(inputs[0].value)) {
-        case 0: 
-            Toast.fire({
-                icon: 'success',
-                title: 'Categoria cadastrada'
-            });
-            inputs[0].value = '';
-            break;
-        case 1:
-            Toast.fire({
-                icon: 'error',
-                title: 'Não foi possível cadastrar a categoria'
-            });
-            break;
-    }
-
-    if (formError) {
-        formError.addEventListener("animationend", (event) => {
-            if (event.animationName === "nono") {
-                formError.classList.remove("validate-error");
-            }
-        });
-    }
-
-    Main();
-});
-
-
-function alterarCategoria(id) {
-    const lista = listar();
-    const categoria = lista.find(item => item.id == id);
-    inputs.forEach(input => {
-        input.parentNode.parentNode.classList.add('focus');
-    })
-
-    inputs[0].value = categoria.nome;
-
-    btnAlterar.addEventListener('click', event => {
-        event.preventDefault();
-    
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top',
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true,
-            onOpen: (toast) => {
-              toast.addEventListener('mouseenter', Swal.stopTimer)
-              toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        })
-    
-        let inputsEmpty = false;
-        inputs.forEach(input => {
-            if (input.value === "") {
-                form.classList.add("validate-error");
-                inputsEmpty = true;
-            } 
-        });
-    
-        const formError = document.querySelector("form#perfil");
-    
-        if (inputsEmpty == true){
-            form.classList.add("validate-error");
-    
-            if (formError) 
-                formError.addEventListener("animationend", event => {
-                    if (event.animationName === "nono") formError.classList.remove("validate-error");
-                });
-        
-            return Toast.fire({
-                icon: 'error',
-                title: 'Preencha todos os campos'
-            });
-        }
-    
-        switch(alterar(id, inputs[0].value)) {
-            case 0: 
-                Toast.fire({
+function efetuarAcoes(event) {
+    const btn = event.submitter;
+    if (btn.id = 'cadastrarCategoria') {
+        switch (cadastrar(nome.value)) {
+            case 0:
+                Swal.fire({
                     icon: 'success',
-                    title: 'Categoria alterada'
-                });
-                inputs[0].value = '';
+                    title: 'Categoria cadastrada'
+                })
+                nome.value = '';
                 break;
             case 1:
                 Toast.fire({
                     icon: 'error',
-                    title: 'Não foi possível alterar a categoria'
-                });
+                    title: 'Não foi possível cadastrar a categoria'
+                })
                 break;
         }
-    
-        if (formError) {
-            formError.addEventListener("animationend", (event) => {
-                if (event.animationName === "nono") {
-                    formError.classList.remove("validate-error");
-                }
-            });
-        }
-    
-        Main();
-    })
+    } 
+    Main();
     
 }
 
-function deletarCategoria(id){
-    const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-            confirmButton: 'btn-confirmar',
-            cancelButton: 'btn-cancelar'
-        },
-        buttonsStyling: false
-    });
+const btnAlterar = document.querySelector('button#alterarCategoria');
 
-    swalWithBootstrapButtons.fire({
-        title: 'Deletar a categoria?',
-        text: "Você não irá poder recuperá-la depois",
+function loadCategoria(id) {
+    const lista = JSON.parse(localStorage.getItem("Categorias"));
+    const categoria = lista.find(item => item.id == id);
+    nome.value = categoria.nome;
+    btnAlterar.disabled = false;
+    btnAlterar.onclick = () => {
+
+        if (nome.value == '') {
+            btnAlterar.disabled = true;
+            return Toast.fire({
+                icon: 'error',
+                title: 'Digite um nome válido'
+            })
+        }
+        alterarCategoria(id, nome.value);
+        nome.value = '';
+    };
+}
+
+function alterarCategoria(id, nome) {
+    if (alterar(id, nome) == 0) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Categoria alterada'
+        })
+    } else {
+        Toast.fire({
+            icon: 'error',
+            title: 'Não foi possível alterar a categoria'
+        })
+    }
+    btnAlterar.disabled = true;
+    Main();
+}
+
+function deletarCategoria(id) {
+    Swal.fire({
+        title: 'Deletar esta categoria?',
+        text: "Ela não pode ser recuperada depois!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Sim, deletar!',
-        cancelButtonText: 'cancelar!',
+        confirmButtonText: 'Sim, deletar!'
     }).then((result) => {
-        if (result.dismiss !== Swal.DismissReason.cancel) {
-            if (deletar(id) == 0)
-            {
-                swalWithBootstrapButtons.fire(
-                    'Categoria deletada',
-                    'A categoria foi deletada com sucesso.',
-                    'success'
-                );
-                
-                Main();
+        if (result.value) {
+            switch (deletar(id)) {
+                case 0:
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Categoria deletada',
+                    });
+                    break;
+            
+                case 1:
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Não foi possível deletar esta categoria',
+                        })
+                        
+                    break;
             }
-            else
-            {
-                swalWithBootstrapButtons.fire(
-                    'ERRO',
-                    'Não foi possível deletar a categoria, tente novamente',
-                    'warning'
-                );
-            }
-        } 
-    });
+            Main();  
+        }
+    })
 }
 
-
+$(document).ready(function(){
+    $('#sidebarCollapse').on('click',function(){
+        $('#sidebar').toggleClass('active');
+    });
+});

@@ -16,7 +16,7 @@ function listar() {
     const conta = Conta();
     const listar = conta.selectConta();
     if(listar === null || listar === undefined || listar.length === 0) return null;
-    return listar.filter(item => item.idUsuario == usuarioLogado().id);
+    return listar.filter(item => item.usuario.id == usuarioLogado().id);
 }
 
 function deletar(id) {

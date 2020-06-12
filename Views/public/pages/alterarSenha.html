@@ -1,74 +1,127 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>login</title>
-    <link rel="stylesheet" href="../../css/alterarSenha.css">
-    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<link rel="stylesheet" href="../../css/alterarSenha.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+<title>Projeto Financeiro</title>
 </head>
 <body>
-    <main class="py-5"> 
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-4"></div>
-                <div class="col-md-4">
-                    <p class="title">ALTERAR SENHA</p>
-                </div>
-                <div class="col-md-4"></div>
-            </div>
-            <div class="row">
-                <div class="col-md-4"></div>
-                <div class="col-md-4">
-                    <div class="login-container">
-                        <form id="login">
-                            <div class="input-div one">
-                                <div class="i">
-                                    <i class="fa fa-lock"></i>
-                                </div>
-                                <div>
-                                    <h5>Senha Atual</h5>
-                                    <input type="password" id="input" class="input">
-                                </div>
-                            </div>
-                            <div class="input-div two">
-                                <div class="i">
-                                    <i class="fa fa-lock"></i>
-                                </div>
-                                <div>
-                                    <h5>Nova Senha</h5>
-                                    <input type="password" id="input" class="input">
-                                </div>
-                            </div>
-                            <div class="input-div two">
-                                <div class="i">
-                                    <i class="fa fa-lock"></i>
-                                </div>
-                                <div>
-                                    <h5>Confirmar Senha</h5>
-                                    <input type="password" id="input" class="input">
-                                </div>
-                            </div>
-                            <button type="submit" class="btn" id="salvar">Salvar</button>
-                            <a href="./perfil.html" class="cadastrar">Voltar</a></p>
-                        </form>
+<div class="wrapper">
+    <nav id="sidebar">
+        <ul class="list-unstyled components">
+            <li class="mb-3">
+                <div id="perfil" class="row">
+                    <div class="col-3">
+                        <img src="../../assets/usuario.svg" alt="perfil">
+                    </div>
+                    <div class="col-9 text-left">
+                            <a href="#submenuPerfil" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Usuário: <strong id="usuario"></strong></a>
+                            <ul class="collapse list-unstyled" id="submenuPerfil">
+                                <li>
+                                    <a href="./perfil.html">Meu perfil</a>
+                                </li>
+                                <li>
+                                    <a href="./alterarSenha.html">Alterar senha</a>
+                                </li>
+                                <li>
+                                    <a onclick="sair()">Sair</a>
+                                </li>
+                            </ul> 
                     </div>
                 </div>
-                <div class="col-md-4"></div>
-              </div>
-          </div>
-    </main>
+            </li>
+            <li>
+                <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+            </li>
+            <li>
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-gear"></i> Gerenciar</a>
+                <ul class="collapse list-unstyled" id="pageSubmenu">
+                    <li>
+                        <a href="./categoria.html">Categorias</a>
+                    </li>
+                    <li>
+                        <a href="./conta.html">Contas</a>
+                    </li>
+                </ul> 
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-line-chart"></i> Lançamentos</a>
+            </li>
+        </ul>
+    </nav>
 
-    <!--Scripts externos-->
+    <div class="content">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
+            <div class="container">
+                <button type="button" id="sidebarCollapse" class="btn btn-info">
+                    <i class="fa fa-align-justify"></i> <span>Menu</span>
+                </button>
+            
+                <!--<a class="navbar-brand" href="#">Navbar</a> -->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">ALTERAR SENHA <span class="sr-only">(current)</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="container mt-4">
+            <section class="row d-flex flex-column justify-content-center align-items-center">
+                <section class="col-12 col-sm-6 col-md-4">
+                  <form class="form-container" novalidate>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Senha atual</label>
+                        <input type="password" class="form-control" id="senhaAtual" minlength="3" placeholder="Ex: *******" required>
+                        <div class="invalid-feedback">
+                          Senha atual incorreta.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Nova senha</label>
+                      <input type="password" class="form-control" id="senhaNova" minlength="3" placeholder="Ex: *******" required>
+                      <div class="invalid-feedback">
+                        A nova senha precisa ser diferente da atual.
+                        A senha deve conter no mínimo 3 caracteres.
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Confirmar nova senha</label>
+                      <input type="password" class="form-control" id="senhaConfirmar" minlength="3" placeholder="Ex: *******" required>
+                      <div class="invalid-feedback">
+                        As senhas não coincidem.
+                      </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" id="alterarSenha" class="btn btn-primary btn-block">Alterar senha</button>   
+                    </div>
+                  </form>              
+                </section>
+            </section>
+        </div>
+    </div>
+</div>
+
+    <!--Scripts de links externos-->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <!--Scripts do projeto-->
     <script src="../../js/pages/alterarSenha.js"></script>
-    <script src="../../../Controllers/usuarioController.js"></script>
+    <script src="../../js/pages/utils/deslogar.js"></script>
     <script src="../../../Models/Usuario.js"></script>
-    
+    <script src="../../../Controllers/usuarioController.js"></script>
+    <script src="../../../Controllers/utils/verificacoes.js"></script>
 </body>
 </html>

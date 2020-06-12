@@ -135,10 +135,13 @@ function alterarSenha(senhaAtual, novaSenha, confirmaSenha) {
         if (novaSenha !== confirmaSenha) return 3;
 
         lista.map(item => {
-            if (item.id == logado.id) item.senha = confirmaSenha;
+            if (item.id == usuarioLogado().id) item.senha = confirmaSenha;
         });
         
+        const logado = lista.find(item => item.id == usuarioLogado().id)
+
         usuario.updateUsuarios(lista);
+        localStorage.setItem("UsuarioLogado", JSON.stringify(logado));
         return 0;
     } catch (error) {
         console.log(error);
