@@ -30,7 +30,9 @@ function Main() {
         selectCategoria.innerHTML += '<option selected disabled value="">Cadastre uma categoria</option>'
     } else {
         for (const categoria of renderizarCategorias) {
-            selectCategoria.innerHTML += `<option value="${categoria.id}">${categoria.nome}</option>`
+            if (categoria.usuario.id == usuarioLogado().id){
+                selectCategoria.innerHTML += `<option value="${categoria.id}">${categoria.nome}</option>`
+            }
         }
     }
     const thread = document.querySelector("tbody#conteudo-table");

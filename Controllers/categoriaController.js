@@ -13,7 +13,7 @@ function listar() {
     const categoria = Categoria();
     const listar = categoria.selectCategoria();
     if (listar === null || listar === undefined || listar.length === 0) return null; 
-    return listar.filter(item => item.usuario.id == usuarioLogado().id);
+    return listar.filter(item => item.usuario.id === usuarioLogado().id);
 }
 
 function deletar(id) {
