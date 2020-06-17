@@ -26,8 +26,8 @@ const [selectTipo, selectCategoria] = document.getElementsByTagName('select');
 function Main() {
     selectCategoria.innerHTML = '';
     const renderizarCategorias = categorias();
-    if (renderizarCategorias === null || renderizarCategorias === undefined || renderizarCategorias.length == 0) {
-        selectCategoria.innerHTML += '<option selected disabled value="">Cadastre uma categoria</option>'
+    if (renderizarCategorias === null || renderizarCategorias === undefined || renderizarCategorias.length <= 0) {
+        selectCategoria.innerHTML += '<option disabled value="">Cadastre uma categoria</option>'
     } else {
         for (const categoria of renderizarCategorias) {
             if (categoria.usuario.id == usuarioLogado().id){

@@ -31,7 +31,7 @@ function efetuarLogin() {
         }
     })
     const [email, senha] = document.getElementsByTagName('input');
-    switch (logar(email.value, senha.value)) {
+    switch (logar(email.value,senha.value)) {
         case 0:
             window.location = './pages/index.html'
             break;
@@ -62,7 +62,7 @@ function efetuarLogin() {
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Sim, reativar!'
-            }).then((result) => {
+              }).then((result) => {
                 if (result.value) {
                     if (reativarConta(email.value, senha.value) == 0) {
                         Swal.fire({

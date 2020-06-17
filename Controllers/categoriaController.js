@@ -21,14 +21,17 @@ function deletar(id) {
         const categoria = Categoria();
         const lista = categoria.selectCategoria();
         
+        const categoriaConta = lista.find(item => item.id == id);
         const pos = lista.findIndex(item => item.id == id);
         lista.splice(pos, 1);
 
         const listaConta = contas();
-        if (listaConta !== undefined && listaConta !== null && listaConta.length > 0) {
+        if (listaConta !== undefined && listaConta !== null) {
             for(const conta of listaConta) {
-                const pos = listaConta.findIndex(item => item.id == conta.id && item.categoria.id == id)
-                listaConta.splice(pos, 1);
+                if (conta.categoria.id == categoriaConta.id){
+                    const pos = listaConta.findIndex(item => item.id == conta.id)
+                    listaConta.splice(pos, 1);
+                }
             }
             localStorage.setItem("Contas", JSON.stringify(listaConta));
         }

@@ -9,7 +9,7 @@ function cadastrar(Nome, Email, Senha, Endereco, Telefone){
             Endereco, 
             Telefone
         );
-
+        
         usuario.status = 'ATIVO';
         usuario.insertUsuarios(usuario);
         localStorage.setItem("UsuarioLogado", JSON.stringify(usuario));

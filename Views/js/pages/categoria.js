@@ -29,8 +29,8 @@ function Main() {
     if (renderizarCategorias === null) {
         thread.innerHTML += '<tr>'
                          +      '<th scope="row">Não há categorias cadastradas</th>'
-                         +      '<td>#</th>'
-                         +      '<td>#</th>'
+                         +      '<td>#</td>'
+                         +      '<td>#</td>'
                          +  '</tr>'
     } else {
         for (const categoria of renderizarCategorias) {
@@ -90,7 +90,6 @@ function loadCategoria(id) {
     nome.value = categoria.nome;
     btnAlterar.disabled = false;
     btnAlterar.onclick = () => {
-
         if (nome.value == '') {
             btnAlterar.disabled = true;
             return Toast.fire({

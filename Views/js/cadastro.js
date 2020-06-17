@@ -55,6 +55,4 @@ function efetuarCadastro() {
             email.value = '';
             break;
     }
-
-    
 }
