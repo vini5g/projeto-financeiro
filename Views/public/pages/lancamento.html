@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-<link rel="stylesheet" href="../../css/perfil.css">
+<link rel="stylesheet" href="../../css/conta.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 <title>Projeto Financeiro</title>
 </head>
@@ -53,8 +53,8 @@
             </li>
         </ul>
     </nav>
-
     <div class="content">
+        
         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
             <div class="container">
                 <button type="button" id="sidebarCollapse" class="btn btn-info">
@@ -68,7 +68,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">PERFIL <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="#">LANÇAMENTOS <span class="sr-only">(current)</span></a>
                         </li>
                     </ul>
                 </div>
@@ -76,52 +76,90 @@
         </nav>
         
         <div class="container mt-4">
-            <section class="row d-flex flex-column justify-content-center align-items-center">
-                <section class="col-12 col-sm-6 col-md-4">
-                  <form class="form-container" novalidate>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Nome</label>
-                        <input type="text" class="form-control" id="nome" aria-describedby="nomeHelp" placeholder="Ex: Clark Kent" required>
-                        <div class="invalid-feedback">
-                          Por favor digite seu nome.
-                        </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputEmail1">Email</label>
-                      <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Ex: email@email" required>
-                      <div class="invalid-feedback">
-                        Por favor digite um email válido.
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">Telefone</label>
-                      <input type="text" class="form-control" id="telefone" autocomplete="off" placeholder="Ex: (31) 99999-9999" required>
-                      <div class="invalid-feedback">
-                        Por favor digite seu telefone.
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">Endereço</label>
-                      <input type="text" class="form-control" id="endereco" placeholder="Ex: rua Itajubá, 223" required>
-                      <div class="invalid-feedback">
-                        Por favor digite seu endereço.
-                      </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-6 mb-2">
-                                <button type="submit" id="alterar" class="btn btn-primary btn-block">Alterar</button>
-                            </div>
-                            <div class="col-md-6">
-                                <button type="button" id="deletar" class="btn btn-primary btn-block">Deletar</button>
+                <div class="row mt-3">
+                    <div class="col-md-4">
+                        <div class="card text-white bg-primary mb-3 text-center">
+                            <div class="card-header">RECEITAS</div>
+                            <div class="card-body">
+                              <p class="card-text text-white">0</p>
                             </div>
                         </div>
                     </div>
-                    <hr>
-                    <a href="./alterarSenha.html" class="btn btn-secondary btn-block">Alterar Senha</a>
-                  </form>              
-                </section>
-            </section>
+                    <div class="col-md-4">
+                        <div class="card text-white bg-warning mb-3 text-center">
+                            <div class="card-header">DESPEZAS</div>
+                            <div class="card-body">
+                              <p class="card-text text-white">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-white bg-success mb-3 text-center">
+                            <div class="card-header">SALDO</div>
+                            <div class="card-body">
+                              <p class="card-text text-white">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="row mt-3">
+                <div class="col-md-4">
+                    <form class="form-container" novalidate>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Nome da conta</label>
+                            <input type="nome" class="form-control" id="nome" placeholder="Ex: Conta de luz" required>
+                            <div class="invalid-feedback">
+                                Por favor digite um nome válido.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Tipo da conta</label>
+                            <select class="custom-select" id="selectTipo" required>
+                                <option selected disabled value="">Escolha...</option>
+                                <option value="Despezas">Despezas</option>
+                                <option value="Receitas">Receitas</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Por favor selecione um tipo de conta.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Categoria</label>
+                            <select class="custom-select" id="selectCategoria" required>
+                                <option selected disabled value="">Escolha...</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Por favor selecione uma categoria ou se não existir, crie uma.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button type="submit" id="cadastrarConta" class="btn btn-primary btn-block">Cadastrar</button>   
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="button" id="alterarConta" class="btn btn-primary btn-block" disabled>Alterar</button>   
+                                </div>
+                            </div>
+                        </div>
+                    </form>      
+                </div>
+                <div class="col-md-8">
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">NOME</th>
+                            <th scope="col">TIPO</th>
+                            <th scope="col">CATEGORIA</th>
+                            <th scope="col"></th>
+                          </tr>
+                        </thead>
+                        <tbody id="conteudo-table">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -133,10 +171,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
     <!--Scripts do projeto-->
-    <script src="../../js/pages/perfil.js"></script>
+    <script src="../../js/pages/conta.js"></script>
     <script src="../../js/pages/utils/deslogar.js"></script>
-    <script src="../../../Models/Usuario.js"></script>
-    <script src="../../../Controllers/usuarioController.js"></script>
-    <script src="../../../Controllers/utils/verificacoes.js"></script>
+    <script src="../../../Models/Contas.js"></script>
+    <script src="../../../Controllers/contaController.js"></script>
 </body>
 </html>

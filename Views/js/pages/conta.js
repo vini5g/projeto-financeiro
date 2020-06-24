@@ -25,14 +25,12 @@ const [selectTipo, selectCategoria] = document.getElementsByTagName('select');
 
 function Main() {
     selectCategoria.innerHTML = '';
-    const renderizarCategorias = categorias();
+    const renderizarCategorias = categorias().filter(item => item.usuario.id == usuarioLogado().id);
     if (renderizarCategorias === null || renderizarCategorias === undefined || renderizarCategorias.length <= 0) {
-        selectCategoria.innerHTML += '<option disabled value="">Cadastre uma categoria</option>'
+        selectCategoria.innerHTML += '<option selected disabled value="">Cadastre uma categoria</option>'
     } else {
         for (const categoria of renderizarCategorias) {
-            if (categoria.usuario.id == usuarioLogado().id){
-                selectCategoria.innerHTML += `<option value="${categoria.id}">${categoria.nome}</option>`
-            }
+            selectCategoria.innerHTML += `<option value="${categoria.id}">${categoria.nome}</option>`
         }
     }
     const thread = document.querySelector("tbody#conteudo-table");
