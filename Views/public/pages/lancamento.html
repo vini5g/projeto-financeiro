@@ -81,7 +81,7 @@
                         <div class="card text-white bg-primary mb-3 text-center">
                             <div class="card-header">RECEITAS</div>
                             <div class="card-body">
-                              <p class="card-text text-white">0</p>
+                              <p class="card-text text-white">R$ <strong id="receitas">0</strong></p>
                             </div>
                         </div>
                     </div>
@@ -89,15 +89,15 @@
                         <div class="card text-white bg-warning mb-3 text-center">
                             <div class="card-header">DESPEZAS</div>
                             <div class="card-body">
-                              <p class="card-text text-white">0</p>
+                              <p class="card-text text-white">R$ <strong id="despesas">0</strong></p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="card text-white bg-success mb-3 text-center">
+                        <div id="cardSaldo" class="card text-white mb-3 text-center">
                             <div class="card-header">SALDO</div>
                             <div class="card-body">
-                              <p class="card-text text-white">0</p>
+                              <p class="card-text text-white">R$ <strong id="saldo">0</strong></p>
                             </div>
                         </div>
                     </div>
@@ -120,7 +120,7 @@
                                     <p class="text-black">R$</p>
                                 </div>
                                 <div class="col-10">
-                                    <input type="text" id="valor" class="dinheiro form-control" placeholder="100,00" required/>
+                                    <input type="number" step="0.010" id="valor" class="form-control" placeholder="100,00" required/>
                                 </div>
                             </div>
                             <div class="invalid-feedback">
@@ -128,12 +128,19 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="exampleInputEmail1">Descrição</label>
+                            <input type="text" id="descricao" class="form-control" placeholder="lançamento" required/>
+                            <div class="invalid-feedback">
+                                Por favor digite um nome válido.
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <button type="submit" id="cadastrarConta" class="btn btn-primary btn-block">Cadastrar</button>   
+                                    <button type="submit" id="cadastrarLancamento" class="btn btn-primary btn-block">Cadastrar</button>   
                                 </div>
                                 <div class="col-md-6">
-                                    <button type="button" id="alterarConta" class="btn btn-primary btn-block" disabled>Alterar</button>   
+                                    <button type="button" id="alterarLancamento" class="btn btn-primary btn-block" disabled>Alterar</button>   
                                 </div>
                             </div>
                         </div>
@@ -146,6 +153,10 @@
                             <th scope="col">ID</th>
                             <th scope="col">VALOR</th>
                             <th scope="col">CONTA</th>
+                            <th scope="col">TIPO</th>
+                            <th scope="col">DATA</th>
+                            <th scope="col">HORA</th>
+                            <th scope="col">DESCRICAO</th>
                             <th scope="col"></th>
                           </tr>
                         </thead>
@@ -166,12 +177,11 @@
     <script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js"></script>           
 
     <!--Scripts do projeto-->
-    <script src="../../js/pages/conta.js"></script>
+    <script src="../../js/pages/lancamento.js"></script>
     <script src="../../js/pages/utils/deslogar.js"></script>
-    <script src="../../../Models/Contas.js"></script>
-    <script src="../../../Controllers/contaController.js"></script>
-    <script>
-        $('.dinheiro').mask('#.##0,00', {reverse: true});
-    </script>
+    <script src="../../../Models/Lancamentos.js"></script>
+    <script src="../../../Models/Despesas.js"></script>
+    <script src="../../../Models/Receitas.js"></script>
+    <script src="../../../Controllers/lancamentoController.js"></script>
 </body>
 </html>

@@ -23,5 +23,35 @@ function Main(){
     });
 
     document.querySelector("#usuario").innerHTML = usuarioLogado().nome;
+
+    const receitas = Receitas().selectReceitas();
+    const despesas = Despesas().selectDespesas();
+    if (receitas != null && receitas) {
+        const receita = receitas.find(item => item.usuario.id == usuarioLogado().id);
+        document.getElementById('receitas').innerHTML = receita.valor;
+    }
+
+    if (despesas != null && despesas) {
+        const despesa = despesas.find(item => item.usuario.id == usuarioLogado().id);
+        document.getElementById('despesas').innerHTML = despesa.valor;
+    }
+
+    let saldo = Number(document.getElementById('receitas').innerHTML) - Number(document.getElementById('despesas').innerHTML)
+    document.getElementById('saldo').innerHTML = saldo;
+
+    const cardSaldo = document.getElementById('cardSaldo');
+    if (saldo < 0) {
+        const bgSucess = document.querySelector('div.bg-success');
+        if (bgSucess) {
+            bgSucess.classList.remove('bg-success')
+        }
+        cardSaldo.classList.add('bg-danger');
+    } else {
+        const bgDanger = document.querySelector('div.bg-danger');
+        if (bgDanger) {
+            bgDanger.classList.remove('bg-danger')
+        }
+        cardSaldo.classList.add('bg-success');
+    }
 }
 

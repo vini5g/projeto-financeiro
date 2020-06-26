@@ -26,7 +26,7 @@ function Main() {
     const thread = document.querySelector("tbody#conteudo-table");
     thread.innerHTML = '';
     const renderizarCategorias = listar();
-    if (renderizarCategorias === null) {
+    if (renderizarCategorias === null || renderizarCategorias.length <= 0) {
         thread.innerHTML += '<tr>'
                          +      '<th scope="row">Não há categorias cadastradas</th>'
                          +      '<td>#</td>'

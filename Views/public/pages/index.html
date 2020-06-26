@@ -81,7 +81,7 @@
                     <div class="card text-white bg-primary mb-3 text-center">
                         <div class="card-header">RECEITAS</div>
                         <div class="card-body">
-                          <p class="card-text text-white">0</p>
+                          <p class="card-text text-white">R$ <strong id="receitas">0</strong></p>
                         </div>
                     </div>
                 </div>
@@ -89,15 +89,15 @@
                     <div class="card text-white bg-warning mb-3 text-center">
                         <div class="card-header">DESPEZAS</div>
                         <div class="card-body">
-                          <p class="card-text text-white">0</p>
+                          <p class="card-text text-white">R$ <strong id="despesas">0</strong></p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card text-white bg-success mb-3 text-center">
+                    <div id="cardSaldo" class="card text-white mb-3 text-center">
                         <div class="card-header">SALDO</div>
                         <div class="card-body">
-                          <p class="card-text text-white">0</p>
+                          <p class="card-text text-white">R$ <strong id="saldo">0</strong></p>
                         </div>
                     </div>
                 </div>
@@ -116,6 +116,8 @@
     <script src="../../js/pages/index.js"></script>
     <script src="../../js/pages/utils/deslogar.js"></script>
     <script src="../../../Models/Usuario.js"></script>
+    <script src="../../../Models/Despesas.js"></script>
+    <script src="../../../Models/Receitas.js"></script>
     <script src="../../../Controllers/usuarioController.js"></script>
 </body>
 </html>
