@@ -7,8 +7,8 @@ function Lancamento( valor, descricao, conta, usuario){
     lancamento.descricao = descricao;
     lancamento.valor = valor;
     lancamento.conta = conta;
-    lancamento.data = `${data.getDate()}/${data.getMonth()}/${data.getFullYear()}`;
-    lancamento.hora = `${data.getHours()}:${data.getMinutes()}`;
+    lancamento.data = `${data.toLocaleDateString()}`;
+    lancamento.hora = `${data.toLocaleTimeString()}`;
     lancamento.usuario = usuario;
 
     function selectLancamento() {

@@ -130,33 +130,42 @@ function alterar(id, valor, descricao, idConta) {
                 item.conta = conta;
             } 
         })
+        
+        let receitas = 0.0;
+        let despesas = 0.0;
 
-        switch (conta.tipo) {
-            case "Despesas":
-                const listaDespesa = Despesas().selectDespesas();
-                if (listaDespesa != null || listaDespesa) {
-                    listaDespesa.map(item => {
-                        if (item.usuario.id === usuarioLogado().id) {
-                            item.valor = valor;
-                        }
-                    })
-                    const Despesa = Despesas();
-                    Despesa.updateDespesas(listaDespesa);
-                } 
-                break;
-            case "Receitas":
-                const listaReceita = Receitas().selectReceitas();
-                if (listaReceita != null || listaReceita) {
-                    listaReceita.map(item => {
-                        if (item.usuario.id === usuarioLogado().id) {
-                            item.valor = valor;
-                        }
-                    })
-                    const receita = Receitas();
-                    receita.updateReceitas(listaReceita);
-                } 
-                break;
+        for (const lancamento of listaLancamento) {
+            if (lancamento.conta.tipo == 'Despesas') {
+                despesas += Number(lancamento.valor);
+                console.log(lancamento.valor);
+            } 
+            if (lancamento.conta.tipo == 'Receitas') {
+                receitas += Number(lancamento.valor);
+                console.log(lancamento.valor);
+            }
         }
+
+        const listaDespesa = Despesas().selectDespesas();
+        if (listaDespesa != null || listaDespesa) {
+            listaDespesa.map(item => {
+                if (item.usuario.id === usuarioLogado().id) {
+                    item.valor = despesas;
+                }
+            })
+            const Despesa = Despesas();
+            Despesa.updateDespesas(listaDespesa);
+        } 
+
+        const listaReceita = Receitas().selectReceitas();
+        if (listaReceita != null || listaReceita) {
+            listaReceita.map(item => {
+                if (item.usuario.id === usuarioLogado().id) {
+                    item.valor = receitas;
+                }
+            })
+            const receita = Receitas();
+            receita.updateReceitas(listaReceita);
+        } 
 
         lancamento.updateLancamento(listaLancamento);
         return 0;
