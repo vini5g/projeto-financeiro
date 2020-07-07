@@ -102,6 +102,10 @@
                     </div>
                 </div>
             </div>
+            <div class="row mt-3">
+                <div class="col-md-8" id="barchart_values"></div>
+                <div class="col-md-4" id="chart_div"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -111,6 +115,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
 
     <!--Scripts do projeto-->
     <script src="../../js/pages/index.js"></script>
@@ -119,5 +124,63 @@
     <script src="../../../Models/Despesas.js"></script>
     <script src="../../../Models/Receitas.js"></script>
     <script src="../../../Controllers/usuarioController.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.load("current", {packages:["corechart"]});
+
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            const receitas = JSON.parse(localStorage.getItem("Receitas"));
+            const despesas = JSON.parse(localStorage.getItem("Despesas"));
+            let valorDespesas = 0;
+            let valorReceitas = 0;
+
+            if (receitas != null && receitas) {
+                const listaR = receitas.find(item => item.usuario.id == usuarioLogado().id);
+                valorReceitas = Number(listaR.valor);
+            }
+
+            if (despesas != null && despesas) {
+                const listaD = despesas.find(item => item.usuario.id == usuarioLogado().id);
+                valorDespesas = Number(listaD.valor);
+            }
+            var data = google.visualization.arrayToDataTable([
+                ["Element", "Valor"],
+                ["Receitas", valorReceitas],
+                ["Despesas", valorDespesas],
+            ]);
+
+            var view = new google.visualization.DataView(data);
+            view.setColumns([0, 1,
+                            { calc: "stringify",
+                                sourceColumn: 1,
+                                type: "string",
+                                role: "annotation"}]);
+
+            var option = {
+                'title': "Análise do seu controle financeiro",
+                'height': 400,
+                'bar': {groupWidth: "80%"},
+                'legend': { position: "none" },
+            };
+            var charts = new google.visualization.BarChart(document.getElementById("barchart_values"));
+            charts.draw(view, option);
+                        
+            let dados = new google.visualization.DataTable();
+
+            dados.addColumn('string', 'Topping');
+            dados.addColumn('number', 'Slices');
+            dados.addRows([
+                ['Receitas', valorReceitas],
+                ['Despesas', valorDespesas]
+            ]);
+
+            let options = {'title':'Gráfico',  'height':400};
+
+            let chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(dados, options);
+        }
+    </script>
 </body>
 </html>
