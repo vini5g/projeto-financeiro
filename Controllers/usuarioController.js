@@ -96,6 +96,8 @@ function deletar(){
 
 function deslogar(){
     localStorage.removeItem("UsuarioLogado");
+    localStorage.removeItem("Receitas");
+    localStorage.removeItem("Despesas");
     const usuario = localStorage.getItem("UsuarioLogado");
     if (usuario == undefined || usuario == null) return 0;
     else return 1;

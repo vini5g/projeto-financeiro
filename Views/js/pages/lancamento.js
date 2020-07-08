@@ -24,19 +24,15 @@ const [selectConta] = document.getElementsByTagName('select');
 })();
 
 function Main() {
-    const receitas = Receitas().selectReceitas();
-    const despesas = Despesas().selectDespesas();
-    if (receitas != null && receitas) {
-        const receita = receitas.find(item => item.usuario.id == usuarioLogado().id);
-        document.getElementById('receitas').innerHTML = receita.valor;
-    }
+    renderizar();
+    const receitas = Number(localStorage.getItem("Receitas"));
+    const despesas = Number(localStorage.getItem("Despesas"));
 
-    if (despesas != null && despesas) {
-        const despesa = despesas.find(item => item.usuario.id == usuarioLogado().id);
-        document.getElementById('despesas').innerHTML = despesa.valor;
-    }
+    document.getElementById('receitas').innerHTML = receitas;
+    
+    document.getElementById('despesas').innerHTML = despesas;
 
-    let saldo = Number(document.getElementById('receitas').innerHTML) - Number(document.getElementById('despesas').innerHTML)
+    let saldo = receitas - despesas;
     document.getElementById('saldo').innerHTML = saldo;
 
     const cardSaldo = document.getElementById('cardSaldo');
@@ -119,28 +115,31 @@ function efetuarAcoes(event) {
                 })
                 valor.value = '';
                 selectConta.value = '';
+                Main();
                 break;
             case 1:
                 Toast.fire({
                     icon: 'error',
                     title: 'Não foi possível realizar o lançamento'
                 })
+                Main();
                 break;
             case 2:
                 Toast.fire({
                     icon: 'error',
                     title: 'Cadastre uma conta antes de fazer o lançamento'
                 })
+                Main();
                 break;
             case 3:
                 Toast.fire({
                     icon: 'error',
                     title: 'Esse lançamento já foi realizado'
                 })
+                Main();
                 break;
         }
     } 
-    Main();
 }
 
 const btnAlterar = document.querySelector('button#alterarLancamento');
@@ -176,14 +175,15 @@ function alterarLancamento(id, valor, descricao, conta) {
             icon: 'success',
             title: 'Lançamento alterada'
         })
+        Main();
     } else {
         Toast.fire({
             icon: 'error',
             title: 'Não foi possível alterar o lançamento'
         })
+        Main();
     }
     btnAlterar.disabled = true;
-    Main();
 }
 
 function deletarLancamento(id) {
@@ -201,6 +201,7 @@ function deletarLancamento(id) {
                         icon: 'success',
                         title: 'Lançamento deletada',
                     });
+                    Main();
                     break;
             
                 case 1:
@@ -208,10 +209,9 @@ function deletarLancamento(id) {
                         icon: 'error',
                         title: 'Não foi possível deletar este lançamento',
                         })
-                        
+                        Main();
                     break;
-            }
-            Main();  
+            } 
         }
     })
 }

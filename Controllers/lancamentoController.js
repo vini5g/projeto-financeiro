@@ -11,45 +11,29 @@ function cadastrar(valor, descricao, idConta) {
             if(listaLancamento) return 3;
         }
 
-        switch (conta.tipo) {
-            case "Despesas":
-                const listaDespesa = Despesas().selectDespesas();
-                if (listaDespesa != null || listaDespesa) {
-                    const despesaValor = listaDespesa.find(item => item.usuario.id == usuarioLogado().id);
-                    const value = Number(despesaValor.valor);
-                    const newValue = value + Number(valor);
-                    listaDespesa.map(item => {
-                        if (item.usuario.id === usuarioLogado().id) {
-                            item.valor = newValue;
-                        }
-                    })
-                    const despesa = Despesas();
-                    despesa.updateDespesas(listaDespesa);
-                } else {
-                    const despesa = Despesas(valor, usuarioLogado());
-                    despesa.insertDespesas(despesa);
-                }
-                break;
-            case "Receitas":
-                const listaReceita = Receitas().selectReceitas();
-                if (listaReceita != null || listaReceita) {
-                    const receitaValor = listaReceita.find(item => item.usuario.id == usuarioLogado().id);
-                    const value = Number(receitaValor.valor);
-                    const newValue = value + Number(valor);
-                    listaReceita.map(item => {
-                        if (item.usuario.id === usuarioLogado().id) {
-                            item.valor = newValue;
-                        }
-                    })
-                    const receita = Receitas();
-                    receita.updateReceitas(listaReceita);
-                } else {
-                    const receita = Receitas(valor, usuarioLogado());
-                    receita.insertReceitas(receita);
-                }
-                break;
-        }
+        let despesas = 0.0;
+        let receitas = 0.0;
 
+        if (lista == null) {
+            if (conta.tipo == 'Despesas') {
+                despesas += Number(lancamento.valor);
+                localStorage.setItem("Despesas", JSON.stringify(despesas));
+            } else if (conta.tipo == 'Receitas') {
+                receitas += Number(lancamento.valor);
+                localStorage.setItem("Receitas", `${receitas}`); 
+            }
+        } else {
+            for (const lancamento of lista) {
+                if (lancamento.conta.tipo == 'Despesas') {
+                    despesas += Number(lancamento.valor);
+                    localStorage.setItem("Despesas", JSON.stringify(despesas));
+                } else if (lancamento.conta.tipo == 'Receitas') {
+                    receitas += Number(lancamento.valor);
+                    localStorage.setItem("Receitas", `${receitas}`); 
+                }
+            }
+        }
+        console.log(lancamento);
         lancamento.insertLancamento(lancamento);
         return 0;
     } catch (error) {
@@ -58,54 +42,62 @@ function cadastrar(valor, descricao, idConta) {
     }
 }
 
+function renderizar() {
+    const lancamento = Lancamento();
+    const listar = lancamento.selectLancamento();
+    if(listar === null || listar === undefined || listar.length === 0) return null;
+    
+    const lista = listar.filter(item => item.usuario.id == usuarioLogado().id);
+   
+    let despesas = 0.0;
+    let receitas = 0.0;
+    for (const lancamento of lista) {
+        if (lancamento.conta.tipo == 'Despesas') {
+            despesas += Number(lancamento.valor);
+        } else if (lancamento.conta.tipo == 'Receitas') {
+            receitas += Number(lancamento.valor);
+             
+        }
+    }
+
+    if (despesas == NaN) {
+        despesas = 0.0;
+    } else if (receitas == NaN) {
+        receitas = 0.0;
+    }
+
+    localStorage.setItem("Despesas", JSON.stringify(despesas));
+    localStorage.setItem("Receitas", `${receitas}`);
+}
+
 function listar() {
     const lancamento = Lancamento();
     const listar = lancamento.selectLancamento();
     if(listar === null || listar === undefined || listar.length === 0) return null;
-    return listar.filter(item => item.usuario.id == usuarioLogado().id);
+    const lista = listar.filter(item => item.usuario.id == usuarioLogado().id);
+    return lista;
 }
 
 function deletar(id) {
     try {
         const lancamento = Lancamento();
         const lista = lancamento.selectLancamento();
-        const lancamentoConta = lista.find(item => item.id == id);
+        const lancamentoValor = lista.find(item => item.id == id); 
         const pos = lista.findIndex(item => item.id == id);
-        const conta = flamengo().find(item => item.id == lancamentoConta.conta.id);
-        switch (conta.tipo) {
-            case "Despesas":
-                const listaDespesa = Despesas().selectDespesas();
-                if (listaDespesa != null || listaDespesa) {
-                    const despesaValor = listaDespesa.find(item => item.usuario.id == usuarioLogado().id);
-                    const value = Number(despesaValor.valor);
-                    const newValue = value - Number(lancamentoConta.valor);
-                    listaDespesa.map(item => {
-                        if (item.usuario.id === usuarioLogado().id) {
-                            item.valor = newValue;
-                        }
-                    })
-                    const despesa = Despesas();
-                    despesa.updateDespesas(listaDespesa);
-                } 
-                break;
-            case "Receitas":
-                const listaReceita = Receitas().selectReceitas();
-                if (listaReceita != null || listaReceita) {
-                    const receitaValor = listaReceita.find(item => item.usuario.id == usuarioLogado().id);
-                    const value = Number(receitaValor.valor);
-                    const newValue = value - Number(lancamentoConta.valor);
-                    listaReceita.map(item => {
-                        if (item.usuario.id === usuarioLogado().id) {
-                            item.valor = newValue;
-                        }
-                    })
-                    const receitas = Receitas();
-                    receitas.updateReceitas(listaReceita);
-                } 
-                break;
-        }
 
         lista.splice(pos, 1);
+        
+        let despesas = Number(localStorage.getItem("Despesas"));
+        let receitas = Number(localStorage.getItem("Receitas"));
+
+        if (lancamentoValor.conta.tipo == 'Despesas') {
+            despesas -= Number(lancamentoValor.valor);
+            localStorage.setItem("Despesas", `${despesas}`);
+        } else if (lancamentoValor.conta.tipo == 'Receitas') {
+            receitas -= Number(lancamentoValor.valor);
+            localStorage.setItem("Receitas", `${receitas}`);
+        }
+        
         lancamento.updateLancamento(lista);
         return 0;
     } catch (error) {
@@ -127,46 +119,24 @@ function alterar(id, valor, descricao, idConta) {
             if (item.id == id) {
                 item.valor = valor;
                 item.descricao = descricao; 
-                item.conta = conta;
             } 
         })
-        
-        let receitas = 0.0;
+
         let despesas = 0.0;
+        let receitas = 0.0;
 
         for (const lancamento of listaLancamento) {
             if (lancamento.conta.tipo == 'Despesas') {
                 despesas += Number(lancamento.valor);
+                localStorage.setItem("Despesas", `${despesas}`);
                 console.log(lancamento.valor);
-            } 
-            if (lancamento.conta.tipo == 'Receitas') {
+            } else if (lancamento.conta.tipo == 'Receitas') {
                 receitas += Number(lancamento.valor);
+                localStorage.setItem("Receitas", `${receitas}`);
                 console.log(lancamento.valor);
             }
         }
-
-        const listaDespesa = Despesas().selectDespesas();
-        if (listaDespesa != null || listaDespesa) {
-            listaDespesa.map(item => {
-                if (item.usuario.id === usuarioLogado().id) {
-                    item.valor = despesas;
-                }
-            })
-            const Despesa = Despesas();
-            Despesa.updateDespesas(listaDespesa);
-        } 
-
-        const listaReceita = Receitas().selectReceitas();
-        if (listaReceita != null || listaReceita) {
-            listaReceita.map(item => {
-                if (item.usuario.id === usuarioLogado().id) {
-                    item.valor = receitas;
-                }
-            })
-            const receita = Receitas();
-            receita.updateReceitas(listaReceita);
-        } 
-
+        
         lancamento.updateLancamento(listaLancamento);
         return 0;
     } catch (error) {
@@ -177,6 +147,8 @@ function alterar(id, valor, descricao, idConta) {
 
 function deslogar(){
     localStorage.removeItem("UsuarioLogado");
+    localStorage.removeItem("Receitas");
+    localStorage.removeItem("Despesas");
     const usuario = localStorage.getItem("UsuarioLogado");
     if (usuario == undefined || usuario == null) return 0;
     else return 1;

@@ -121,9 +121,9 @@
     <script src="../../js/pages/index.js"></script>
     <script src="../../js/pages/utils/deslogar.js"></script>
     <script src="../../../Models/Usuario.js"></script>
-    <script src="../../../Models/Despesas.js"></script>
-    <script src="../../../Models/Receitas.js"></script>
+    <script src="../../../Models/Lancamentos.js"></script>
     <script src="../../../Controllers/usuarioController.js"></script>
+    <script src="../../../Controllers/lancamentoController.js"></script>
     <script type="text/javascript">
         google.charts.load('current', {'packages':['corechart']});
         google.charts.load("current", {packages:["corechart"]});
@@ -131,19 +131,17 @@
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
-            const receitas = JSON.parse(localStorage.getItem("Receitas"));
-            const despesas = JSON.parse(localStorage.getItem("Despesas"));
+            const receitas = Number(localStorage.getItem("Receitas"));
+            const despesas = Number(localStorage.getItem("Despesas"));
             let valorDespesas = 0;
             let valorReceitas = 0;
 
             if (receitas != null && receitas) {
-                const listaR = receitas.find(item => item.usuario.id == usuarioLogado().id);
-                valorReceitas = Number(listaR.valor);
+                valorReceitas = receitas;
             }
 
             if (despesas != null && despesas) {
-                const listaD = despesas.find(item => item.usuario.id == usuarioLogado().id);
-                valorDespesas = Number(listaD.valor);
+                valorDespesas = despesas;
             }
             var data = google.visualization.arrayToDataTable([
                 ["Element", "Valor"],
