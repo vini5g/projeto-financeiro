@@ -119,6 +119,7 @@ function alterar(id, valor, descricao, idConta) {
             if (item.id == id) {
                 item.valor = valor;
                 item.descricao = descricao; 
+                item.conta = conta;
             } 
         })
 
